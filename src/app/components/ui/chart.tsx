@@ -1,3 +1,4 @@
+import * as React from "react";
 import type { TooltipProps } from "recharts";
 
 const ChartTooltipContent = React.forwardRef<
