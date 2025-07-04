@@ -90,7 +90,8 @@ const Templates = () => {
   });
 
   const handleTemplateClick = (template: any) => {
-    router.push("/editor", { state: { selectedTemplate: template } });
+    const encodedTemplate = encodeURIComponent(JSON.stringify(template));
+    router.push(`/editor?template=${encodedTemplate}`);
   };
 
   return (
@@ -175,6 +176,7 @@ const Templates = () => {
             </div>
           </div>
 
+          {/* Category Buttons */}
           <div className="flex justify-center flex-wrap gap-6 mb-12">
             {categories.map((category) => (
               <button
@@ -198,65 +200,61 @@ const Templates = () => {
             ))}
           </div>
 
-
           {/* Templates Grid */}
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
-  {filteredTemplates.map((template, index) => (
-    <div
-      key={index}
-      className="group cursor-pointer relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-transform duration-300"
-      onClick={() => handleTemplateClick(template)}
-    >
-      {/* Background gradient and image with vignette */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${template.color}`}>
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-70"
-          style={{
-            backgroundImage: `url(https://images.unsplash.com/${template.image}?w=400&h=600&fit=crop)`,
-          }}
-        />
-        {/* Default vignette */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
-      </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
+            {filteredTemplates.map((template, index) => (
+              <div
+                key={index}
+                className="group cursor-pointer relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-transform duration-300"
+                onClick={() => handleTemplateClick(template)}
+              >
+                <div className={`absolute inset-0 bg-gradient-to-br ${template.color}`}>
+                  <div
+                    className="absolute inset-0 bg-cover bg-center opacity-70"
+                    style={{
+                      backgroundImage: `url(https://images.unsplash.com/${template.image}?w=400&h=600&fit=crop)`,
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
+                </div>
 
-      {/* Template Title */}
-      <div className="relative w-[16rem] h-[30rem] flex justify-center mt-5">
-        <h3 className="text-2xl font-bold text-white">
-          {template.name}
-        </h3>
-      </div>
+                <div className="relative w-[16rem] h-[30rem] flex justify-center mt-5">
+                  <h3 className="text-2xl font-bold text-white">
+                    {template.name}
+                  </h3>
+                </div>
 
-      {/* Overlay on hover with description and CTA */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-        <div className="p-6 text-white w-full">
-          <p className="text-sm mb-3">{template.description}</p>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleTemplateClick(template);
-            }}
-            className="w-full bg-gradient-to-r from-[#8A3FFC] to-[#4F82FF] text-white py-2 px-4 rounded-lg font-medium flex items-center justify-center gap-2 hover:shadow-lg transition-shadow"
-          >
-            Use Template <ArrowRight size={16} />
-          </button>
-        </div>
-      </div>
-    </div>
-  ))}
-</div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                  <div className="p-6 text-white w-full">
+                    <p className="text-sm mb-3">{template.description}</p>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleTemplateClick(template);
+                      }}
+                      className="w-full bg-gradient-to-r from-[#8A3FFC] to-[#4F82FF] text-white py-2 px-4 rounded-lg font-medium flex items-center justify-center gap-2 hover:shadow-lg transition-shadow"
+                    >
+                      Use Template <ArrowRight size={16} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
 
-<div className="mt-16">
+          {/* What's New Section */}
+          <div className="mt-16">
             <h2 className="text-2xl font-bold text-gray-800 mb-8">What's new</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { title: 'Create a custom tribute for Doctors\' Day', color: 'from-blue-500 to-cyan-500', image: 'photo-1559757148-5c350d0d3c56' },
+                { title: "Create a custom tribute for Doctors' Day", color: 'from-blue-500 to-cyan-500', image: 'photo-1559757148-5c350d0d3c56' },
                 { title: 'Get creative for back to school', color: 'from-green-500 to-teal-500', image: 'photo-1580582932707-520aed937b7b' },
                 { title: 'Design joy this Krishna Janmashtami', color: 'from-purple-500 to-pink-500', image: 'photo-1578662996442-48f60103fc96' },
                 { title: 'Create with gratitude this Guru Purnima', color: 'from-yellow-500 to-orange-500', image: 'photo-1507003211169-0a1dd7228f2d' }
               ].map((item, index) => (
                 <div key={index} className="relative h-48 rounded-2xl overflow-hidden cursor-pointer group hover:scale-105 transition-transform">
                   <div className={`absolute inset-0 bg-gradient-to-br ${item.color}`}>
-                    <div 
+                    <div
                       className="absolute inset-0 bg-cover bg-center mix-blend-overlay opacity-40"
                       style={{
                         backgroundImage: `url(https://images.unsplash.com/${item.image}?w=400&h=300&fit=crop)`
@@ -272,7 +270,6 @@ const Templates = () => {
               ))}
             </div>
           </div>
-
 
         </div>
       </div>
